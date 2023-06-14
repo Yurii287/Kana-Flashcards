@@ -1,0 +1,119 @@
+import tkinter as tk
+from tkinter import ttk
+from threading import Thread
+
+# Entry Box & Buttons for submitting answers
+# Potentially use label to display the character
+#   - Randomly select a key:value to print for the label
+# Have menu bar for quit options
+# Show progress bar of how far through the session you are
+# Use a 2 dictionaries for hiragana and katakana to relate to the sounds
+# In future add the dakten
+
+
+hiragana = {"あ":"a",
+            "い":"i",
+            "う":"u",
+            "え":"e",
+            "お":"o", 
+            "か":"ka",
+            "き":"ki",
+            "く":"ku",
+            "け":"ke",
+            "こ":"ko",
+            "さ":"sa",
+            "し":"shi",
+            "す":"su",
+            "せ":"se",
+            "そ":"so",
+            "た":"ta",
+            "ち":"chi",
+            "つ":"tsu",
+            "て":"te",
+            "と":"to",
+            "な":"na",
+            "に":"ni",
+            "ぬ":"nu",
+            "ね":"ne",
+            "の":"no",
+            "は":"ha",
+            "ひ":"hi",
+            "ふ":"fu",
+            "へ":"he",
+            "ほ":"ho",
+            "ま":"ma",
+            "み":"mi",
+            "む":"mu",
+            "め":"me",
+            "も":"mo",
+            "や":"ya",
+            "ゆ":"yu",
+            "よ":"yo",
+            "ら":"ra",
+            "り":"ri",
+            "る":"ru",
+            "れ":"re",
+            "ろ":"ro",
+            "わ":"wa",
+            "を":"wo",
+            "ん":"n"}
+
+katakana = {"ア":"a",
+            "イ":"i",
+            "ウ":"u",
+            "エ":"e",
+            "オ":"o", 
+            "カ":"ka",
+            "キ":"ki",
+            "ク":"ku",
+            "ケ":"ke",
+            "コ":"ko",
+            "サ":"sa",
+            "シ":"shi",
+            "ス":"su",
+            "セ":"se",
+            "ソ":"so",
+            "タ":"ta",
+            "チ":"chi",
+            "ツ":"tsu",
+            "テ":"te",
+            "ト":"to",
+            "ナ":"na",
+            "ニ":"ni",
+            "ヌ":"nu",
+            "ネ":"ne",
+            "ノ":"no",
+            "ハ":"ha",
+            "ヒ":"hi",
+            "フ":"fu",
+            "ヘ":"he",
+            "ホ":"ho",
+            "マ":"ma",
+            "ミ":"mi",
+            "ム":"mu",
+            "メ":"me",
+            "モ":"mo",
+            "ヤ":"ya",
+            "ユ":"yu",
+            "ヨ":"yo",
+            "ラ":"ra",
+            "リ":"ri",
+            "ル":"ru",
+            "レ":"re",
+            "ロ":"ro",
+            "ワ":"wa",
+            "ヲ":"wo",
+            "ン":"n"}
+
+class App(tk.Tk):
+    def __init__(self):
+        super().__init__()
+
+        #all tkinter configs go here
+        self.label = tk.Label(self, text="Testing OOP")
+        self.label.grid(row=0,column=0)
+
+
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
