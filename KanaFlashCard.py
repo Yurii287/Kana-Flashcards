@@ -1,3 +1,4 @@
+import random
 import tkinter as tk
 from tkinter import ttk
 from threading import Thread
@@ -9,7 +10,6 @@ from threading import Thread
 # Show progress bar of how far through the session you are
 # Use a 2 dictionaries for hiragana and katakana to relate to the sounds
 # In future add the dakten
-
 
 hiragana = {"あ":"a",
             "い":"i",
@@ -105,13 +105,30 @@ katakana = {"ア":"a",
             "ヲ":"wo",
             "ン":"n"}
 
+class Hiragana:
+    def __init__(self):
+        pass
+    def submit(self):
+        print("OOP working")
+
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-
+        self.title("Kana Flashcards")
+        self.geometry("640x480")
         #all tkinter configs go here
-        self.label = tk.Label(self, text="Testing OOP")
-        self.label.grid(row=0,column=0)
+        
+        #label
+        self.flashcard = tk.Label(self,text="ロ",font=("",40))
+        self.flashcard.pack()
+        
+        #entry
+        self.answer_box = tk.Entry(self,font=("Arial",24))
+        self.answer_box.pack()
+
+        #submit button
+        self.submit = tk.Button(self,text="Submit",command=lambda: Hiragana.submit(self),font=("Arial",18))
+        self.submit.pack()
 
 
 if __name__ == "__main__":
