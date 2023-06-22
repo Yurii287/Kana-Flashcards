@@ -120,17 +120,21 @@ class App(tk.Tk):
         self.geometry("640x480")
         #all tkinter configs go here
         
+        #Weight the window - scalable centred elements
+        self.grid_rowconfigure(0,weight=0)
+        self.grid_columnconfigure(0,weight=1)
+        
         #label
         self.flashcard = tk.Label(self,text="ロ",font=("",40))
-        self.flashcard.pack()
+        self.flashcard.grid(row=0,column=0)
         
         #entry
         self.answer_box = tk.Entry(self,font=("Arial",24))
-        self.answer_box.pack()
+        self.answer_box.grid(row=1,column=0)
 
         #submit button
         self.submit = tk.Button(self,text="Submit",command=lambda: Hiragana.submit(self),font=("Arial",18))
-        self.submit.pack()
+        self.submit.grid(row=2,column=0)
 
 
 if __name__ == "__main__":
