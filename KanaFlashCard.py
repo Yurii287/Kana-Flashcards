@@ -12,9 +12,8 @@ from threading import Thread
 #
 # Use CustomTkinter
 
-class Katakana:
-    def __init__(self):
-        self.katakana = {"ア":"a",
+
+katakana_dict = {"ア":"a",
                         "イ":"i",
                         "ウ":"u",
                         "エ":"e",
@@ -60,92 +59,82 @@ class Katakana:
                         "ワ":"wa",
                         "ヲ":"wo",
                         "ン":"n"}
-    randKatakana = "ア"
 
-class Hiragana:
-    def __init__(self):
-        self.hiragana = {"あ":"a",
-                        "い":"i",
-                        "う":"u",
-                        "え":"e",
-                        "お":"o", 
-                        "か":"ka",
-                        "き":"ki",
-                        "く":"ku",
-                        "け":"ke",
-                        "こ":"ko",
-                        "さ":"sa",
-                        "し":"shi",
-                        "す":"su",
-                        "せ":"se",
-                        "そ":"so",
-                        "た":"ta",
-                        "ち":"chi",
-                        "つ":"tsu",
-                        "て":"te",
-                        "と":"to",
-                        "な":"na",
-                        "に":"ni",
-                        "ぬ":"nu",
-                        "ね":"ne",
-                        "の":"no",
-                        "は":"ha",
-                        "ひ":"hi",
-                        "ふ":"fu",
-                        "へ":"he",
-                        "ほ":"ho",
-                        "ま":"ma",
-                        "み":"mi",
-                        "む":"mu",
-                        "め":"me",
-                        "も":"mo",
-                        "や":"ya",
-                        "ゆ":"yu",
-                        "よ":"yo",
-                        "ら":"ra",
-                        "り":"ri",
-                        "る":"ru",
-                        "れ":"re",
-                        "ろ":"ro",
-                        "わ":"wa",
-                        "を":"wo",
-                        "ん":"n"}
 
-    rand_H = "あ"
+hiragana_dict= {"あ":"a",
+                "い":"i",
+                "う":"u",
+                "え":"e",
+                "お":"o", 
+                "か":"ka",
+                "き":"ki",
+                "く":"ku",
+                "け":"ke",
+                "こ":"ko",
+                "さ":"sa",
+                "し":"shi",
+                "す":"su",
+                "せ":"se",
+                "そ":"so",
+                "た":"ta",
+                "ち":"chi",
+                "つ":"tsu",
+                "て":"te",
+                "と":"to",
+                "な":"na",
+                "に":"ni",
+                "ぬ":"nu",
+                "ね":"ne",
+                "の":"no",
+                "は":"ha",
+                "ひ":"hi",
+                "ふ":"fu",
+                "へ":"he",
+                "ほ":"ho",
+                "ま":"ma",
+                "み":"mi",
+                "む":"mu",
+                "め":"me",
+                "も":"mo",
+                "や":"ya",
+                "ゆ":"yu",
+                "よ":"yo",
+                "ら":"ra",
+                "り":"ri",
+                "る":"ru",
+                "れ":"re",
+                "ろ":"ro",
+                "わ":"wa",
+                "を":"wo",
+                "ん":"n"}
 
-class MyFrame(customtkinter.CTkFrame,Hiragana):
-    
-    result = "Incorrect"
-    result_color= "red"
-    
+randHiragana = ""
+
+class MyFrame(customtkinter.CTkFrame):   
     def __init__(self, master,):
         super().__init__(master)
         
-        self.label = customtkinter.CTkLabel(self,text=Hiragana.rand_H,font=("Calibri",80))
+        self.label = customtkinter.CTkLabel(self,text=randHiragana,font=("Calibri",80))
         self.label.grid(row=0,column=0,pady=25)
         
         self.entry = customtkinter.CTkEntry(self,font=("Calibri",28),width=250)
         self.entry.grid(row=1,column=0,pady=25)
         
-        self.submit = customtkinter.CTkButton(self,font=("Calibri",28),command=lambda: MyFrame.submit(),text="Submit")
+        self.submit = customtkinter.CTkButton(self,font=("Calibri",28),command=lambda: App.submit(),text="Submit")
         self.submit.grid(row=2,column=0,pady=25)
         
-        self.new_card = customtkinter.CTkButton(self,font=("Calibri",28),command=lambda: MyFrame.index(self.label),text="New Card")
+        self.new_card = customtkinter.CTkButton(self,font=("Calibri",28),command=lambda: App.index(randHiragana),text="New Card")
         self.new_card.grid(row=3,column=0,pady=25)
         
-        self.result = customtkinter.CTkLabel(self,font=("Calibri",28),text=MyFrame.result,text_color=MyFrame.result_color)
+        self.result = customtkinter.CTkLabel(self,font=("Calibri",28),text=App.result,text_color=App.result_color)
         self.result.grid(row=4,column=0)
-    
-    def index(label):
-        print(Hiragana.rand_H)
-        label.configure(text="New Text")
         
         
-    def submit():
-        print("Answer Submitted")
-
-
 class App(customtkinter.CTk):
+    
+    result = "Incorrect"
+    result_color= "red"
+    
     def __init__(self):
         super().__init__()
         self.title("Kana Flashcards")
@@ -156,7 +145,24 @@ class App(customtkinter.CTk):
         
         self.my_frame = MyFrame(master=self)
         self.my_frame.pack()
+        
+        self.bind("<Return>",App.submit_hotkey)
+        
+        
 
+    def index(randHiragana):
+        indx = random.randint(0,45)
+        newHiragana = list(hiragana_dict)[indx]
+        randHiragana = newHiragana
+        print(randHiragana)
+        return randHiragana
+        
+        
+    def submit():
+        print("Answer Submitted")
+        
+    def submit_hotkey(event):
+        print("Answer Submitted")
 
 if __name__ == "__main__":
     app = App()
