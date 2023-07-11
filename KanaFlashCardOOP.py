@@ -1,7 +1,6 @@
 import random
-import customtkinter
-from tkinter import *
-from threading import Thread
+import tkinter as tk
+from tkinter import ttk
 
 # Entry Box & Buttons for submitting answers
 # Potentially use label to display the character
@@ -9,7 +8,6 @@ from threading import Thread
 # Have menu bar for quit options
 # Show progress bar of how far through the session you are
 # In future add the dakten
-#
 
 
 katakana_dict = {"ア":"a",
@@ -107,63 +105,46 @@ hiragana_dict= {"あ":"a",
                 "を":"wo",
                 "ん":"n"}
 
-randHiragana = ""
+randHiragana = "あ"
 
-class MyFrame(customtkinter.CTkFrame):   
-    def __init__(self, master,):
-        super().__init__(master)
-        
-        self.label = customtkinter.CTkLabel(self,text=randHiragana,font=("Calibri",80))
-        self.label.grid(row=0,column=0,pady=25)
-        
-        self.entry = customtkinter.CTkEntry(self,font=("Calibri",28),width=250)
-        self.entry.grid(row=1,column=0,pady=25)
-        
-        self.submit = customtkinter.CTkButton(self,font=("Calibri",28),command=lambda: App.submit(),text="Submit")
-        self.submit.grid(row=2,column=0,pady=25)
-        
-        self.new_card = customtkinter.CTkButton(self,font=("Calibri",28),command=lambda: App.index(randHiragana),text="New Card")
-        self.new_card.grid(row=3,column=0,pady=25)
-        
-        self.result = customtkinter.CTkLabel(self,font=("Calibri",28),text=App.result,text_color=App.result_color)
-        self.result.grid(row=4,column=0)
-        
-        
-class App(customtkinter.CTk):
-    
-    result = "Incorrect"
-    result_color= "red"
-    
-    def __init__(self):
+
+class App(tk.Tk):
+    def __init__(self,title,size):
         super().__init__()
-        self.title("Kana Flashcards")
-        self.geometry("640x480")
-        
-        customtkinter.set_appearance_mode("System")
-        customtkinter.set_default_color_theme("green")
-        
-        self.my_frame = MyFrame(master=self)
-        self.my_frame.pack()
-        
-        self.bind("<Return>",App.submit_hotkey)
-        
-        
+#Window Config
+        self.title(title)
+        self.geometry(f'{size[0]}x{size[1]}')
+        self.minsize(size[0],size[1])
+#Frame
+        self.mainframe = MainFrame(self,randHiragana)
+        self.mainframe.pack()
+#Hotkeys
+        self.hotkeys = Hotkeys(self)
+        self.hotkeys.pack()
 
-    def index(randHiragana):
-        indx = random.randint(0,45)
-        newHiragana = list(hiragana_dict)[indx]
-        randHiragana = newHiragana
-        print(randHiragana)
-        return randHiragana
-        
-        
-    def submit():
-        print("Answer Submitted")
-        
-    def submit_hotkey(event):
-        print("Answer Submitted")
+        self.mainloop()
 
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
-    
+class MainFrame(ttk.Frame):
+    def __init__(self,parent,randHiragana):
+        super().__init__(parent)
+
+        def Submit():
+            print(self.entry.get())
+
+        self.label = tk.Label(self,text=randHiragana,font=("Calibri",64))
+        self.label.pack()
+
+        self.submitbtn = tk.Button(self,text="Submit",command=Submit)
+        self.submitbtn.pack()
+
+        self.entry = tk.Entry(self,font=("Calibri",24))
+        self.entry.pack()
+
+class Hotkeys(tk.Tk):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.bind("<w>",print("Hello Wolrd"))
+
+
+App("Kana Flash Cards",(640,480))
