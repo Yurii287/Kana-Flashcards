@@ -105,46 +105,44 @@ hiragana_dict= {"あ":"a",
                 "を":"wo",
                 "ん":"n"}
 
-randHiragana = "あ"
-
-
 class App(tk.Tk):
     def __init__(self,title,size):
         super().__init__()
+#String Var
+        Hiraganastring_variable = tk.StringVar(self,"あ")
+        
+        Resultstring_variable = tk.StringVar(self," ")      
 #Window Config
         self.title(title)
         self.geometry(f'{size[0]}x{size[1]}')
         self.minsize(size[0],size[1])
 #Frame
-        self.mainframe = MainFrame(self,randHiragana)
-        self.mainframe.pack()
-#Hotkeys
-        self.hotkeys = Hotkeys(self)
-        self.hotkeys.pack()
+        self.mainframe = MainFrame(self,Resultstring_variable,Hiraganastring_variable)
+        self.mainframe.place(x=160,y=50)
 
         self.mainloop()
 
 class MainFrame(ttk.Frame):
-    def __init__(self,parent,randHiragana):
+    def __init__(self,parent,Resultstring_variable,Hiraganastring_variable):
         super().__init__(parent)
 
-        def Submit():
-            print(self.entry.get())
+        def HiraganaIndx():
+                shown_hiragana = list(hiragana_dict.keys())[random.randint(0,45)]
+                return shown_hiragana
+        
+        def Submit(Resultstring_variable, Hiraganastring_variable):
+                Hiraganastring_variable.set(HiraganaIndx())
 
-        self.label = tk.Label(self,text=randHiragana,font=("Calibri",64))
+        self.label = tk.Label(self,textvariable=Hiraganastring_variable,font=("Calibri",64))
         self.label.pack()
 
-        self.submitbtn = tk.Button(self,text="Submit",command=Submit)
+        self.submitbtn = tk.Button(self,text="Submit",command=lambda: Submit(Resultstring_variable, Hiraganastring_variable),font=("Calibri",24))
         self.submitbtn.pack()
 
         self.entry = tk.Entry(self,font=("Calibri",24))
         self.entry.pack()
-
-class Hotkeys(tk.Tk):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.bind("<w>",print("Hello Wolrd"))
-
+        
+        self.resultLabel = tk.Label(self,textvariable=Resultstring_variable)
+        self.resultLabel.pack()
 
 App("Kana Flash Cards",(640,480))
