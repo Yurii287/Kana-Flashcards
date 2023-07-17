@@ -127,8 +127,8 @@ class MainFrame(ttk.Frame):
         super().__init__(parent)
 
         def HiraganaIndx():
-                shown_hiragana = list(hiragana_dict.keys())[random.randint(0,45)]
-                return shown_hiragana
+                for i in list(hiragana_dict)[random.randint(0,45)]:
+                        return i, list(hiragana_dict[i])
         
         def Submit(Resultstring_variable, Hiraganastring_variable):
                 Hiraganastring_variable.set(HiraganaIndx())
@@ -146,3 +146,6 @@ class MainFrame(ttk.Frame):
         self.resultLabel.pack()
 
 App("Kana Flash Cards",(640,480))
+
+#                shown_hiragana = list(hiragana_dict.keys())[random.randint(0,45)]
+#                return shown_hiragana
