@@ -125,27 +125,30 @@ class App(tk.Tk):
 class MainFrame(ttk.Frame):
     def __init__(self,parent,Resultstring_variable,Hiraganastring_variable):
         super().__init__(parent)
-
+        
+        answer = []
+        
         def HiraganaIndx():
                 for i in list(hiragana_dict)[random.randint(0,45)]:
-                        return i, list(hiragana_dict[i])
-        
-        def Submit(Resultstring_variable, Hiraganastring_variable):
-                Hiraganastring_variable.set(HiraganaIndx())
+                        chosenHiragana = i, list(hiragana_dict[i])
+                Hiraganastring_variable.set(chosenHiragana[0])
+                answer.append(''.join(chosenHiragana[1]))
+                print(answer)
+                answer.pop()
+                
+        def Submit(Hiraganastring_variable):
+                HiraganaIndx()
 
         self.label = tk.Label(self,textvariable=Hiraganastring_variable,font=("Calibri",64))
         self.label.pack()
-
-        self.submitbtn = tk.Button(self,text="Submit",command=lambda: Submit(Resultstring_variable, Hiraganastring_variable),font=("Calibri",24))
+        
+        self.submitbtn = tk.Button(self,text="Submit",command=lambda: Submit(Hiraganastring_variable,),font=("Calibri",24))
         self.submitbtn.pack()
 
-        self.entry = tk.Entry(self,font=("Calibri",24))
-        self.entry.pack()
+        self.Userentry = tk.Entry(self,font=("Calibri",24))
+        self.Userentry.pack()
         
         self.resultLabel = tk.Label(self,textvariable=Resultstring_variable)
         self.resultLabel.pack()
 
 App("Kana Flash Cards",(640,480))
-
-#                shown_hiragana = list(hiragana_dict.keys())[random.randint(0,45)]
-#                return shown_hiragana
