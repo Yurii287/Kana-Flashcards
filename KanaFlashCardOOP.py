@@ -134,10 +134,15 @@ class MainFrame(ttk.Frame):
                 Hiraganastring_variable.set(chosenHiragana[0])
                 answer.append(''.join(chosenHiragana[1]))
                 print(answer)
-                answer.pop()
                 
         def Submit(Hiraganastring_variable):
                 HiraganaIndx()
+                if self.Userentry.get() == answer[len(answer)-2]:
+                        print("Correct")
+                else: print("Incorrect")
+                self.Userentry.delete(0, tk.END)
+                if len(answer) > 2:
+                        answer.pop(0)
 
         self.label = tk.Label(self,textvariable=Hiraganastring_variable,font=("Calibri",64))
         self.label.pack()
