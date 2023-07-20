@@ -119,15 +119,18 @@ class App(tk.Tk):
 #Frame
         self.hiraganaframe = HiraganaFrame(self,Resultstring_variable,Hiraganastring_variable)
         self.hiraganaframe.place(x=160,y=50)
+        
         self.mainloop()
-
-
 class HiraganaFrame(ttk.Frame):
     def __init__(self,parent,Resultstring_variable,Hiraganastring_variable):
         super().__init__(parent)
         
         answer = []
-
+        
+        def Start():
+                Submit(Resultstring_variable)
+                self.startbtn.destroy()
+        
         def HiraganaIndx():
                 for i in list(hiragana_dict)[random.randint(0,45)]:
                         chosenHiragana = i, list(hiragana_dict[i])
@@ -137,16 +140,21 @@ class HiraganaFrame(ttk.Frame):
                 
         def Submit(Resultstring_variable):
                 HiraganaIndx()
-                if self.Userentry.get() == answer[len(answer)-2]:
-                        Resultstring_variable.set("Correct")
-                else: Resultstring_variable.set("Incorrect")
-                self.Userentry.delete(0, tk.END)
-                if len(answer) > 2:
-                        answer.pop(0)
+                if len(answer) <= 1:
+                        pass
+                else:
+                        if self.Userentry.get() == answer[len(answer)-2]:
+                                Resultstring_variable.set("Correct")
+                        else: Resultstring_variable.set("Incorrect")
+                        self.Userentry.delete(0, tk.END)
+                        if len(answer) > 2:
+                                answer.pop(0)
 
-        
         self.label = tk.Label(self,textvariable=Hiraganastring_variable,font=("Calibri",64))
         self.label.pack()
+        
+        self.startbtn = tk.Button(self,text="Start",command=Start,font=("Calibri",24))
+        self.startbtn.pack()
         
         self.submitbtn = tk.Button(self,text="Submit",command=lambda: Submit(Resultstring_variable),font=("Calibri",24))
         self.submitbtn.pack()
