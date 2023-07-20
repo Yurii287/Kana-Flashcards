@@ -108,6 +108,10 @@ hiragana_dict= {"あ":"a",
 class App(tk.Tk):
     def __init__(self,title,size):
         super().__init__()
+#Variables
+        answer = []
+        score = 0
+
 #String Var
         Hiraganastring_variable = tk.StringVar(self,"Start")
         
@@ -117,35 +121,40 @@ class App(tk.Tk):
         self.geometry(f'{size[0]}x{size[1]}')
         self.minsize(size[0],size[1])
 #Frame
-        self.hiraganaframe = HiraganaFrame(self,Resultstring_variable,Hiraganastring_variable)
+        self.hiraganaframe = HiraganaFrame(self,Resultstring_variable,Hiraganastring_variable,answer,score)
         self.hiraganaframe.place(x=160,y=50)
         
         self.mainloop()
+        
 class HiraganaFrame(ttk.Frame):
-    def __init__(self,parent,Resultstring_variable,Hiraganastring_variable):
+    def __init__(self,parent,Resultstring_variable,Hiraganastring_variable,answer,score):
         super().__init__(parent)
         
-        answer = []
-        
-        def Start():
-                Submit(Resultstring_variable)
+        self.answer = answer
+        self.score = score
+                
+        def Start(self):
+                Submit(self,Resultstring_variable)
                 self.startbtn.destroy()
         
-        def HiraganaIndx():
+        def HiraganaIndx(self):
                 for i in list(hiragana_dict)[random.randint(0,45)]:
                         chosenHiragana = i, list(hiragana_dict[i])
                 Hiraganastring_variable.set(chosenHiragana[0])
                 answer.append(''.join(chosenHiragana[1]))
                 print(answer)
                 
-        def Submit(Resultstring_variable):
-                HiraganaIndx()
+        def Submit(self,Resultstring_variable):
+                HiraganaIndx(self)
                 if len(answer) <= 1:
                         pass
                 else:
                         if self.Userentry.get() == answer[len(answer)-2]:
                                 Resultstring_variable.set("Correct")
-                        else: Resultstring_variable.set("Incorrect")
+                                self.score += 1
+                                print(self.score)
+                        else:
+                                Resultstring_variable.set("Incorrect")
                         self.Userentry.delete(0, tk.END)
                         if len(answer) > 2:
                                 answer.pop(0)
@@ -153,10 +162,10 @@ class HiraganaFrame(ttk.Frame):
         self.label = tk.Label(self,textvariable=Hiraganastring_variable,font=("Calibri",64))
         self.label.pack()
         
-        self.startbtn = tk.Button(self,text="Start",command=Start,font=("Calibri",24))
+        self.startbtn = tk.Button(self,text="Start",command=lambda: Start(self),font=("Calibri",24))
         self.startbtn.pack()
         
-        self.submitbtn = tk.Button(self,text="Submit",command=lambda: Submit(Resultstring_variable),font=("Calibri",24))
+        self.submitbtn = tk.Button(self,text="Submit",command=lambda: Submit(self,Resultstring_variable),font=("Calibri",24))
         self.submitbtn.pack()
 
         self.Userentry = tk.Entry(self,font=("Calibri",24))
@@ -165,4 +174,7 @@ class HiraganaFrame(ttk.Frame):
         self.resultLabel = tk.Label(self,textvariable=Resultstring_variable,font=("Calibri",32))
         self.resultLabel.pack()
         
+class ScoreFrame():
+        pass
+
 App("Kana Flash Cards",(640,480))
