@@ -5,7 +5,6 @@ from tkinter import ttk
 
 # Have menu bar for quit options
 # add the dakten
-# Keep a score 
 # Pick how many cards to practice
 #       use a for loop with a window opening for an int
 
@@ -111,21 +110,41 @@ class App(tk.Tk):
 #Variables
         answer = []
         score = 0
-
 #String Var
         Hiraganastring_variable = tk.StringVar(self,"Start")
         
-        Resultstring_variable = tk.StringVar(self," ")      
+        Katakanastring_variable = tk.StringVar(self,"Start")
+        
+        Resultstring_variable = tk.StringVar(self," ")
 #Window Config
         self.title(title)
         self.geometry(f'{size[0]}x{size[1]}')
         self.minsize(size[0],size[1])
-#Frame
+#MenuBar
+        menubar = Menu(self)
+        self.config(menu=menubar)
+        Navbar(self,menubar)
+        
+#Frames
         self.hiraganaframe = HiraganaFrame(self,Resultstring_variable,Hiraganastring_variable,answer,score)
         self.hiraganaframe.place(x=160,y=50)
         
-        self.mainloop()
+        self.katakanaframe = KatakanaFrame(self,Resultstring_variable,Katakanastring_variable,answer,score)
+        self.katakanaframe.place(x=160,y=50)
         
+        self.mainloop()
+
+class Navbar(tk.Menu):
+        def __init__(self,parent,menubar):
+                super().__init__(parent)
+                
+                fileMenu = Menu(menubar,tearoff=0)
+                menubar.add_cascade(label="Switch Script",menu=fileMenu,font=("Calibri",14))
+        
+                fileMenu.add_command(label="Hiragana",command=lambda: changeHiragana(),font=("Calibri",14))
+                fileMenu.add_command(label="Katakana",command=lambda: changeKatakana(),font=("Calibri",14))
+
+
 class HiraganaFrame(ttk.Frame):
     def __init__(self,parent,Resultstring_variable,Hiraganastring_variable,answer,score):
         super().__init__(parent)
@@ -136,6 +155,8 @@ class HiraganaFrame(ttk.Frame):
         def Start(self):
                 Submit(self,Resultstring_variable)
                 self.startbtn.destroy()
+                self.submitbtn = tk.Button(self,text="Submit",command=lambda: Submit(self,Resultstring_variable),font=("Calibri",24))
+                self.submitbtn.pack()
         
         def HiraganaIndx(self):
                 for i in list(hiragana_dict)[random.randint(0,45)]:
@@ -153,20 +174,21 @@ class HiraganaFrame(ttk.Frame):
                                 Resultstring_variable.set("Correct")
                                 self.score += 1
                                 print(self.score)
+                                self.scoreLabel.config(text=str(self.score))
+                                
                         else:
                                 Resultstring_variable.set("Incorrect")
+                                print(self.score)
                         self.Userentry.delete(0, tk.END)
                         if len(answer) > 2:
                                 answer.pop(0)
 
-        self.label = tk.Label(self,textvariable=Hiraganastring_variable,font=("Calibri",64))
-        self.label.pack()
+
+        self.Mainlabel = tk.Label(self,textvariable=Hiraganastring_variable,font=("Calibri",64))
+        self.Mainlabel.pack()
         
         self.startbtn = tk.Button(self,text="Start",command=lambda: Start(self),font=("Calibri",24))
         self.startbtn.pack()
-        
-        self.submitbtn = tk.Button(self,text="Submit",command=lambda: Submit(self,Resultstring_variable),font=("Calibri",24))
-        self.submitbtn.pack()
 
         self.Userentry = tk.Entry(self,font=("Calibri",24))
         self.Userentry.pack()
@@ -174,7 +196,14 @@ class HiraganaFrame(ttk.Frame):
         self.resultLabel = tk.Label(self,textvariable=Resultstring_variable,font=("Calibri",32))
         self.resultLabel.pack()
         
-class ScoreFrame():
-        pass
+        self.scoreLabel = tk.Label(self,text=str(self.score),font=("Calibri",24))
+        self.scoreLabel.pack()
+        
+                
+class KatakanaFrame(ttk.Frame):
+        def __init__(self,parent,Resultstring_variable,Katakanastring_variable,answer,score):
+                super().__init__(parent)
+                pass
+
 
 App("Kana Flash Cards",(640,480))
