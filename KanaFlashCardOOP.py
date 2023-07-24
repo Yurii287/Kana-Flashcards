@@ -120,29 +120,51 @@ class App(tk.Tk):
         self.title(title)
         self.geometry(f'{size[0]}x{size[1]}')
         self.minsize(size[0],size[1])
-#MenuBar
-        menubar = Menu(self)
-        self.config(menu=menubar)
-        Navbar(self,menubar)
-        
 #Frames
         self.hiraganaframe = HiraganaFrame(self,Resultstring_variable,Hiraganastring_variable,answer,score)
-        self.hiraganaframe.place(x=160,y=50)
         
         self.katakanaframe = KatakanaFrame(self,Resultstring_variable,Katakanastring_variable,answer,score)
-        self.katakanaframe.place(x=160,y=50)
-        
-        self.mainloop()
+#Main Screen
+        self.mainmenuframe = MainMenu(self)
+        self.mainmenuframe.pack()
 
-class Navbar(tk.Menu):
-        def __init__(self,parent,menubar):
+#NavBar
+        menubar = Menu(self)
+        self.config(menu=menubar)
+        Navbar(self,menubar,self.hiraganaframe,self.katakanaframe,self.mainmenuframe)
+             
+        self.mainloop()
+        
+class MainMenu(ttk.Frame):
+        def __init__(self,parent):
                 super().__init__(parent)
+                
+                self.welcomeLabel = tk.Label(self,text="Select Hiragana or Katakana from the nav bar",font=("Calibri",24))
+                self.welcomeLabel.pack()
+                
+class Navbar(tk.Menu):
+        def __init__(self,parent,menubar,hiraganaframe,katakanaframe,mainmenuframe):
+                super().__init__(parent)
+                
+                def changeHiragana(self):
+                        hiraganaframe.place(x=160,y=50)
+                        katakanaframe.place_forget()
+                        mainmenuframe.pack_forget()
+                        self.score = 0
+                        self.scoreLabel.config(text=str(self.score))
+                        
+                def changeKatakana(self):
+                        katakanaframe.place(x=160,y=50)
+                        hiraganaframe.place_forget()
+                        mainmenuframe.pack_forget()
+                        self.score = 0
+                        self.scoreLabel.config(text=str(self.score))
                 
                 fileMenu = Menu(menubar,tearoff=0)
                 menubar.add_cascade(label="Switch Script",menu=fileMenu,font=("Calibri",14))
         
-                fileMenu.add_command(label="Hiragana",command=lambda: changeHiragana(),font=("Calibri",14))
-                fileMenu.add_command(label="Katakana",command=lambda: changeKatakana(),font=("Calibri",14))
+                fileMenu.add_command(label="Hiragana",command=lambda: changeHiragana(self),font=("Calibri",14))
+                fileMenu.add_command(label="Katakana",command=lambda: changeKatakana(self),font=("Calibri",14))
 
 
 class HiraganaFrame(ttk.Frame):
@@ -203,7 +225,56 @@ class HiraganaFrame(ttk.Frame):
 class KatakanaFrame(ttk.Frame):
         def __init__(self,parent,Resultstring_variable,Katakanastring_variable,answer,score):
                 super().__init__(parent)
-                pass
+                
+                self.answer = answer
+                self.score = score
+                
+                def Start(self):
+                        Submit(self,Resultstring_variable)
+                        self.startbtn.destroy()
+                        self.submitbtn = tk.Button(self,text="Submit",command=lambda: Submit(self,Resultstring_variable),font=("Calibri",24))
+                        self.submitbtn.pack()
+                
+                def HiraganaIndx(self):
+                        for i in list(katakana_dict)[random.randint(0,45)]:
+                                chosenHiragana = i, list(katakana_dict[i])
+                        Katakanastring_variable.set(chosenHiragana[0])
+                        answer.append(''.join(chosenHiragana[1]))
+                        print(answer)
+                        
+                def Submit(self,Resultstring_variable):
+                        HiraganaIndx(self)
+                        if len(answer) <= 1:
+                                pass
+                        else:
+                                if self.Userentry.get() == answer[len(answer)-2]:
+                                        Resultstring_variable.set("Correct")
+                                        self.score += 1
+                                        print(self.score)
+                                        self.scoreLabel.config(text=str(self.score))
+                                        
+                                else:
+                                        Resultstring_variable.set("Incorrect")
+                                        print(self.score)
+                                self.Userentry.delete(0, tk.END)
+                                if len(answer) > 2:
+                                        answer.pop(0)
+
+
+                self.Mainlabel = tk.Label(self,textvariable=Katakanastring_variable,font=("Calibri",64))
+                self.Mainlabel.pack()
+                
+                self.startbtn = tk.Button(self,text="Start",command=lambda: Start(self),font=("Calibri",24))
+                self.startbtn.pack()
+
+                self.Userentry = tk.Entry(self,font=("Calibri",24))
+                self.Userentry.pack()
+                
+                self.resultLabel = tk.Label(self,textvariable=Resultstring_variable,font=("Calibri",32))
+                self.resultLabel.pack()
+                
+                self.scoreLabel = tk.Label(self,text=str(self.score),font=("Calibri",24))
+                self.scoreLabel.pack()
 
 
 App("Kana Flash Cards",(640,480))
