@@ -3,12 +3,6 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 
-# Have menu bar for quit options
-# add the dakten
-# Pick how many cards to practice
-#       use a for loop with a window opening for an int
-
-
 katakana_dict = {"ア":"a",
                 "イ":"i",
                 "ウ":"u",
@@ -55,7 +49,6 @@ katakana_dict = {"ア":"a",
                 "ワ":"wa",
                 "ヲ":"wo",
                 "ン":"n"}
-
 
 hiragana_dict= {"あ":"a",
                 "い":"i",
@@ -104,12 +97,66 @@ hiragana_dict= {"あ":"a",
                 "を":"wo",
                 "ん":"n"}
 
+hiragana_dakuten_dict= {"が":"ga",
+                        "ぎ":"gi",
+                        "ぐ":"gu",
+                        "げ":"ge",
+                        "ご":"go",
+                        "ざ":"za",
+                        "じ":"ji",
+                        "ず":"zu",
+                        "ぜ":"ze",
+                        "ぞ":"zo",
+                        "だ":"da",
+                        "ぢ":"ji",
+                        "づ":"zu",
+                        "で":"de",
+                        "ど":"do",
+                        "ば":"ba",
+                        "び":"bi",
+                        "ぶ":"bu",
+                        "べ":"be",
+                        "ぼ":"bo",
+                        "ぱ":"pa",
+                        "ぴ":"pi",
+                        "ぷ":"pu",
+                        "ぺ":"pe",
+                        "ぽ":"po"}
+
+katakana_dakuten_dict= {"ガ":"ga",
+                        "ギ":"gi",
+                        "グ":"gu",
+                        "ゲ":"ge",
+                        "ゴ":"go",
+                        "ザ":"za",
+                        "ジ":"ji",
+                        "ズ":"zu",
+                        "ゼ":"ze",
+                        "ゾ":"zo",
+                        "ダ":"da",
+                        "ヂ":"ji",
+                        "ヅ":"zu",
+                        "デ":"de",
+                        "ド":"do",
+                        "バ":"ba",
+                        "ビ":"bi",
+                        "ブ":"bu",
+                        "ベ":"be",
+                        "ボ":"bo",
+                        "パ":"pa",
+                        "ピ":"pi",
+                        "プ":"pu",
+                        "ペ":"pe",
+                        "ポ":"po"}
+
 class App(tk.Tk):
     def __init__(self,title,size):
         super().__init__()
 #Variables
         answer = []
         score = 0
+        H_dakuten = False
+        K_dakuten = False
 #String Var
         Hiraganastring_variable = tk.StringVar(self,"Start")
         
@@ -125,46 +172,56 @@ class App(tk.Tk):
         
         self.katakanaframe = KatakanaFrame(self,Resultstring_variable,Katakanastring_variable,answer,score)
 #Main Screen
-        self.mainmenuframe = MainMenu(self)
-        self.mainmenuframe.pack()
-
+        self.wlcmLabel = tk.Label(self,text="Welcome",font=("Calibri",32))
+        self.wlcmLabel.pack()
+        
+        self.wlcm2Label = tk.Label(self,text="Activate dakuten within the navbar",font=("Calibri",32))
+        self.wlcm2Label.pack()
+        
 #NavBar
         menubar = Menu(self)
         self.config(menu=menubar)
-        Navbar(self,menubar,self.hiraganaframe,self.katakanaframe,self.mainmenuframe)
-             
+        Navbar(self,menubar,self.hiraganaframe,self.katakanaframe,self.wlcmLabel,H_dakuten,K_dakuten,self.wlcm2Label)
+           
         self.mainloop()
-        
-class MainMenu(ttk.Frame):
-        def __init__(self,parent):
-                super().__init__(parent)
-                
-                self.welcomeLabel = tk.Label(self,text="Select Hiragana or Katakana from the nav bar",font=("Calibri",24))
-                self.welcomeLabel.pack()
-                
+
 class Navbar(tk.Menu):
-        def __init__(self,parent,menubar,hiraganaframe,katakanaframe,mainmenuframe):
+        def __init__(self,parent,menubar,hiraganaframe,katakanaframe,wlcmLabel,H_dakuten,K_dakuten,wlcm2Label):
                 super().__init__(parent)
                 
                 def changeHiragana(self):
                         hiraganaframe.place(x=160,y=50)
                         katakanaframe.place_forget()
-                        mainmenuframe.pack_forget()
+                        wlcmLabel.pack_forget()
+                        wlcm2Label.pack_forget()
                         self.score = 0
-                        self.scoreLabel.config(text=str(self.score))
                         
                 def changeKatakana(self):
                         katakanaframe.place(x=160,y=50)
                         hiraganaframe.place_forget()
-                        mainmenuframe.pack_forget()
+                        wlcmLabel.pack_forget()
+                        wlcm2Label.pack_forget()
                         self.score = 0
-                        self.scoreLabel.config(text=str(self.score))
+                        
+                def hiraganaDakuten(self):
+                        hiragana_dict.update(hiragana_dakuten_dict)
+                
+                def katakanaDakuten(self):
+                        katakana_dict.update(katakana_dakuten_dict)
                 
                 fileMenu = Menu(menubar,tearoff=0)
-                menubar.add_cascade(label="Switch Script",menu=fileMenu,font=("Calibri",14))
+                menubar.add_cascade(label="Switch Script",menu=fileMenu)
         
-                fileMenu.add_command(label="Hiragana",command=lambda: changeHiragana(self),font=("Calibri",14))
-                fileMenu.add_command(label="Katakana",command=lambda: changeKatakana(self),font=("Calibri",14))
+                fileMenu.add_command(label="Hiragana",command=lambda: changeHiragana(self))
+                fileMenu.add_command(label="Katakana",command=lambda: changeKatakana(self))
+                fileMenu.add_separator()
+                fileMenu.add_command(label="Exit",command=quit)
+                
+                dakutenMenu = Menu(menubar,tearoff=0)
+                menubar.add_cascade(label="Dakuten",menu=dakutenMenu)
+                
+                dakutenMenu.add_command(label="Add hiragana dakuten",command=lambda: hiraganaDakuten(self))
+                dakutenMenu.add_command(label="Add katakana dakuten",command=lambda: katakanaDakuten(self))
 
 
 class HiraganaFrame(ttk.Frame):
@@ -181,7 +238,7 @@ class HiraganaFrame(ttk.Frame):
                 self.submitbtn.pack()
         
         def HiraganaIndx(self):
-                for i in list(hiragana_dict)[random.randint(0,45)]:
+                for i in list(hiragana_dict)[random.randint(0,len(hiragana_dict))]:
                         chosenHiragana = i, list(hiragana_dict[i])
                 Hiraganastring_variable.set(chosenHiragana[0])
                 answer.append(''.join(chosenHiragana[1]))
@@ -221,6 +278,7 @@ class HiraganaFrame(ttk.Frame):
         self.scoreLabel = tk.Label(self,text=str(self.score),font=("Calibri",24))
         self.scoreLabel.pack()
         
+        
                 
 class KatakanaFrame(ttk.Frame):
         def __init__(self,parent,Resultstring_variable,Katakanastring_variable,answer,score):
@@ -236,7 +294,7 @@ class KatakanaFrame(ttk.Frame):
                         self.submitbtn.pack()
                 
                 def HiraganaIndx(self):
-                        for i in list(katakana_dict)[random.randint(0,45)]:
+                        for i in list(katakana_dict)[random.randint(0,len(katakana_dict)-1)]:
                                 chosenHiragana = i, list(katakana_dict[i])
                         Katakanastring_variable.set(chosenHiragana[0])
                         answer.append(''.join(chosenHiragana[1]))
