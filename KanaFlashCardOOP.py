@@ -176,8 +176,7 @@ class App(tk.Tk):
         self.wlcmLabel.pack()
         
         self.wlcm2Label = tk.Label(self,text="Activate dakuten within the navbar",font=("Calibri",32))
-        self.wlcm2Label.pack()
-        
+        self.wlcm2Label.pack()  
 #NavBar
         menubar = Menu(self)
         self.config(menu=menubar)
@@ -190,14 +189,14 @@ class Navbar(tk.Menu):
                 super().__init__(parent)
                 
                 def changeHiragana(self):
-                        hiraganaframe.place(x=160,y=50)
+                        hiraganaframe.pack(fill="both", expand=True, padx=20, pady=20)
                         katakanaframe.place_forget()
                         wlcmLabel.pack_forget()
                         wlcm2Label.pack_forget()
                         self.score = 0
                         
                 def changeKatakana(self):
-                        katakanaframe.place(x=160,y=50)
+                        katakanaframe.pack(fill="both", expand=True, padx=20, pady=20)
                         hiraganaframe.place_forget()
                         wlcmLabel.pack_forget()
                         wlcm2Label.pack_forget()
@@ -335,4 +334,4 @@ class KatakanaFrame(ttk.Frame):
                 self.scoreLabel.pack()
 
 
-App("Kana Flash Cards",(640,480))
+App("Kana Flash Cards",(860,480))
