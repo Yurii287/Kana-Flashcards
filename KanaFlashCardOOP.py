@@ -1,7 +1,9 @@
 import random
-import tkinter as tk
-from tkinter import *
-from tkinter import ttk
+import customtkinter
+from CTkMen
+#import tkinter as tk
+#from tkinter import *
+#from tkinter import ttk
 
 katakana_dict = {"ア":"a",
                 "イ":"i",
@@ -149,7 +151,7 @@ katakana_dakuten_dict= {"ガ":"ga",
                         "ペ":"pe",
                         "ポ":"po"}
 
-class App(tk.Tk):
+class App(customtkinter.CTk):
     def __init__(self,title,size):
         super().__init__()
 #Variables
@@ -158,11 +160,11 @@ class App(tk.Tk):
         H_dakuten = False
         K_dakuten = False
 #String Var
-        Hiraganastring_variable = tk.StringVar(self,"Start")
+        Hiraganastring_variable = customtkinter.StringVar(self,"Start")
         
-        Katakanastring_variable = tk.StringVar(self,"Start")
+        Katakanastring_variable = customtkinter.StringVar(self,"Start")
         
-        Resultstring_variable = tk.StringVar(self," ")
+        Resultstring_variable = customtkinter.StringVar(self," ")
 #Window Config
         self.title(title)
         self.geometry(f'{size[0]}x{size[1]}')
@@ -172,10 +174,10 @@ class App(tk.Tk):
         
         self.katakanaframe = KatakanaFrame(self,Resultstring_variable,Katakanastring_variable,answer,score)
 #Main Screen
-        self.wlcmLabel = tk.Label(self,text="Welcome",font=("Calibri",32))
+        self.wlcmLabel = customtkinter.CtkLabel(self,text="Welcome",font=("Calibri",32))
         self.wlcmLabel.pack()
         
-        self.wlcm2Label = tk.Label(self,text="Activate dakuten within the navbar",font=("Calibri",32))
+        self.wlcm2Label = customtkinter.CtkLabel(self,text="Activate dakuten within the navbar",font=("Calibri",32))
         self.wlcm2Label.pack()  
 #NavBar
         menubar = Menu(self)
@@ -213,8 +215,6 @@ class Navbar(tk.Menu):
         
                 fileMenu.add_command(label="Hiragana",command=lambda: changeHiragana(self))
                 fileMenu.add_command(label="Katakana",command=lambda: changeKatakana(self))
-                fileMenu.add_separator()
-                fileMenu.add_command(label="Exit",command=quit)
                 
                 dakutenMenu = Menu(menubar,tearoff=0)
                 menubar.add_cascade(label="Dakuten",menu=dakutenMenu)
@@ -262,7 +262,7 @@ class HiraganaFrame(ttk.Frame):
                                 answer.pop(0)
 
 
-        self.Mainlabel = tk.Label(self,textvariable=Hiraganastring_variable,font=("Calibri",64))
+        self.Mainlabel = customtkinter.CtkLabel(self,textvariable=Hiraganastring_variable,font=("Calibri",64))
         self.Mainlabel.pack()
         
         self.startbtn = tk.Button(self,text="Start",command=lambda: Start(self),font=("Calibri",24))
@@ -271,10 +271,10 @@ class HiraganaFrame(ttk.Frame):
         self.Userentry = tk.Entry(self,font=("Calibri",24))
         self.Userentry.pack()
         
-        self.resultLabel = tk.Label(self,textvariable=Resultstring_variable,font=("Calibri",32))
+        self.resultLabel = customtkinter.CtkLabel(self,textvariable=Resultstring_variable,font=("Calibri",32))
         self.resultLabel.pack()
         
-        self.scoreLabel = tk.Label(self,text=str(self.score),font=("Calibri",24))
+        self.scoreLabel = customtkinter.CtkLabel(self,text=str(self.score),font=("Calibri",24))
         self.scoreLabel.pack()
         
         
