@@ -255,6 +255,8 @@ class HiraganaFrame(ttk.Frame):
                         else:
                                 Resultstring_variable.set("Incorrect")
                                 print(self.score)
+                                self.correctAnswer.config(text="Previous Answer: " + answer[-1])
+
                         self.Userentry.delete(0, tk.END)
                         if len(answer) > 2:
                                 answer.pop(0)
@@ -274,6 +276,10 @@ class HiraganaFrame(ttk.Frame):
         
         self.scoreLabel = tk.Label(self,text=str(self.score),font=("Calibri",24))
         self.scoreLabel.pack()
+
+        self.correctAnswer = tk.Label(self, text= answer, font=("Calibri",24))
+        self.correctAnswer.pack()
+
         
         
                 
@@ -311,6 +317,7 @@ class KatakanaFrame(ttk.Frame):
                                 else:
                                         Resultstring_variable.set("Incorrect")
                                         print(self.score)
+                                        self.correctAnswer.config(text="Previous Answer: " + answer[-1])
                                 self.Userentry.delete(0, tk.END)
                                 if len(answer) > 2:
                                         answer.pop(0)
@@ -330,6 +337,9 @@ class KatakanaFrame(ttk.Frame):
                 
                 self.scoreLabel = tk.Label(self,text=str(self.score),font=("Calibri",24))
                 self.scoreLabel.pack()
+
+                self.correctAnswer = tk.Label(self, text= answer, font=("Calibri",24))
+                self.correctAnswer.pack()
 
 
 App("Kana Flash Cards",(860,480))
